@@ -2,11 +2,19 @@ function App() {
   const [songs, setSongs] = React.useState([]);
 
   React.useEffect(() => {
-    // VercelでデプロイしたAPIのURLに変更
-    fetch("https://kara-api.vercel.app/api/songs")
-      .then(res => res.json())
-      .then(data => setSongs(data))
-      .catch(err => console.error("APIエラー:", err));
+    const apiUrl = "https://kara-api.vercel.app/api/songs";
+
+    fetch(apiUrl)
+      .then((res) => {
+        if (!res.ok) throw new Error("Network response was not ok");
+        return res.json();
+      })
+      .then((data) => {
+        setSongs(data); // [["曲名1", 3], ["曲名2", 2], ...]
+      })
+      .catch((err) => {
+        console.error("APIエラー:", err);
+      });
   }, []);
 
   return (
